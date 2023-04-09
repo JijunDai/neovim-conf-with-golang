@@ -46,8 +46,13 @@ require('lazy').setup({
 
             -- Useful status updates for LSP
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            { 'j-hui/fidget.nvim', opts = {} },
-
+            { 'j-hui/fidget.nvim',
+		opts = {
+                    window = {
+                        blend = 0,
+                    },
+                }
+	    },
             -- Additional lua configuration, makes nvim stuff amazing!
             'folke/neodev.nvim',
         },
@@ -59,7 +64,7 @@ require('lazy').setup({
     },
 
     -- Useful plugin to show you pending keybinds.
-    { 'folke/which-key.nvim',          opts = {} },
+    { 'folke/which-key.nvim', opts = {} },
     { -- Adds git releated signs to the gutter, as well as utilities for managing changes
         'lewis6991/gitsigns.nvim',
         opts = {
@@ -75,11 +80,86 @@ require('lazy').setup({
         },
     },
 
-    { -- Theme inspired by Atom
-        'navarasu/onedark.nvim',
-        priority = 1000,
+    -- { -- Theme inspired by Atom
+    --     'navarasu/onedark.nvim',
+    --     priority = 1000,
+    --     config = function()
+    --         vim.cmd.colorscheme 'onedark'
+    --     end,
+    -- },
+    -- { -- Theme tokyonight
+    --     'folke/tokyonight.nvim',
+    --      priority = 1000,
+    --      config = function()
+    --          vim.cmd.colorscheme 'tokyonight-night'
+    --      end,
+    -- },
+    { "catppuccin/nvim",
+        name = "catppuccin",
         config = function()
-            vim.cmd.colorscheme 'onedark'
+            require("catppuccin").setup({
+                flavour = "mocha", -- latte, frappe, macchiato, mocha
+                background = { -- :h background
+                    light = "latte",
+                    dark = "mocha",
+                },
+                transparent_background = false,
+                show_end_of_buffer = false, -- show the '~' characters after the end of buffers
+                term_colors = false,
+                dim_inactive = {
+                    enabled = false,
+                    shade = "dark",
+                    percentage = 0.15,
+                },
+                no_italic = false, -- Force no italic
+                no_bold = false, -- Force no bold
+                styles = {
+                    comments = { "italic" },
+                    conditionals = { "italic" },
+                    loops = {},
+                    functions = {},
+                    keywords = {},
+                    strings = {},
+                    variables = {},
+                    numbers = {},
+                    booleans = {},
+                    properties = {},
+                    types = {},
+                    operators = {},
+                },
+                color_overrides = {},
+                custom_highlights = {},
+                integrations = {
+                    cmp = true,
+                    gitsigns = true,
+                    nvimtree = true,
+                    telescope = true,
+                    notify = false,
+                    mini = false,
+                    treesitter = true,
+                    which_key = true,
+                    gitgutter = true,
+                    fidget = true,
+                    native_lsp = {
+                        enabled = true,
+                        virtual_text = {
+                            errors = { "italic" },
+                            hints = { "italic" },
+                            warnings = { "italic" },
+                            information = { "italic" },
+                        },
+                        underlines = {
+                            errors = { "underline" },
+                            hints = { "underline" },
+                            warnings = { "underline" },
+                            information = { "underline" },
+                        },
+                    },
+                    -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+                },
+            })
+            -- setup must be called before loading
+            vim.cmd.colorscheme "catppuccin"
         end,
     },
 
@@ -89,7 +169,7 @@ require('lazy').setup({
         opts = {
             options = {
                 icons_enabled = false,
-                theme = 'onedark',
+                theme = "catppuccin",
                 component_separators = '|',
                 section_separators = '',
             },
@@ -107,7 +187,7 @@ require('lazy').setup({
     },
 
     -- "gc" to comment visual regions/lines
-    { 'numToStr/Comment.nvim',         opts = {} },
+    { 'numToStr/Comment.nvim', opts = {} },
 
     -- Fuzzy Finder (files, lsp, etc)
     { 'nvim-telescope/telescope.nvim', version = '*', dependencies = { 'nvim-lua/plenary.nvim' } },
@@ -170,6 +250,9 @@ vim.o.clipboard = 'unnamedplus'
 vim.o.breakindent = true
 vim.o.autoindent = true
 vim.o.expandtab = true -- expand tab to spaces
+vim.o.ts = 2
+vim.o.sts = 2
+vim.o.sw = 2
 
 -- Save undo history
 vim.o.undofile = true
@@ -428,7 +511,7 @@ cmp.setup {
         end,
     },
     mapping = cmp.mapping.preset.insert {
-        ['<C-d>'] = cmp.mapping.scroll_docs( -4),
+        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete {},
         ['<CR>'] = cmp.mapping.confirm {
@@ -447,8 +530,8 @@ cmp.setup {
         ['<S-Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_prev_item()
-            elseif luasnip.jumpable( -1) then
-                luasnip.jump( -1)
+            elseif luasnip.jumpable(-1) then
+                luasnip.jump(-1)
             else
                 fallback()
             end
