@@ -4,15 +4,18 @@
 -- See the kickstart.nvim README for more information
 return {
     -- Bufferline
-    { 'akinsho/bufferline.nvim', version = "v3.*", dependencies = 'nvim-tree/nvim-web-devicons' },
+    { 'akinsho/bufferline.nvim',    version = "v3.*", dependencies = 'nvim-tree/nvim-web-devicons' },
     -- Nvimtree (File Explorer)
     -- Added this reference to the initial file
+    { "nvim-tree/nvim-web-devicons" },
     {
         "nvim-tree/nvim-tree.lua",
-        version = "*",
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
-        },
+        -- version = "*",
+        --dependencies = {
+        --    "nvim-tree/nvim-web-devicons",
+        --},
+        --after = "nvim-web-devicons",
+        --requires = "nvim-tree/nvim-web-devicons",
         config = function()
             require("nvim-tree").setup {
                 update_focused_file = {
@@ -81,9 +84,8 @@ return {
     },
     -- vim-go
     { "fatih/vim-go", },
-    { -- amongst your other plugins
-        { 'akinsho/toggleterm.nvim', version = "*", config = true },
-        -- or
-        --{ 'akinsho/toggleterm.nvim', version = "*", opts = { --[[ things you want to change go here]] } }
-    }
+    -- amongst your other plugins
+    { 'akinsho/toggleterm.nvim', version = "*", config = true },
+    -- or { 'akinsho/toggleterm.nvim', version = "*", opts = { --[[ things you want to change go here]] } }
+    { 'ryanoasis/vim-devicons' }
 }
