@@ -1,13 +1,13 @@
 -- You can add your own plugins here or in other files in this directory!
---  I promise not to create any merge conflicts in this directory :)
---
--- See the kickstart.nvim README for more information
 return {
     -- Bufferline
-    { 'akinsho/bufferline.nvim',    version = "v3.*", dependencies = 'nvim-tree/nvim-web-devicons' },
+    { 'akinsho/bufferline.nvim', version = "v3.*", dependencies = 'nvim-tree/nvim-web-devicons' },
     -- Nvimtree (File Explorer)
-    -- Added this reference to the initial file
-    { "nvim-tree/nvim-web-devicons" },
+    { "nvim-tree/nvim-web-devicons",
+        config = function()
+            require("nvim-web-devicons").setup { default = true, }
+        end,
+    },
     {
         "nvim-tree/nvim-tree.lua",
         -- version = "*",

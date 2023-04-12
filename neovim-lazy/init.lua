@@ -28,8 +28,6 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
     -- NOTE: First, some plugins that don't require any configuration
 
-    -- Easily speed up your neovim startup time!
-    'nathom/filetype.nvim',
     -- Git related plugins
     'tpope/vim-fugitive',
     'tpope/vim-rhubarb',
@@ -65,16 +63,20 @@ require('lazy').setup({
         version = "1.*",
         -- install jsregexp (optional!).
         build = "make install_jsregexp",
-        require("luasnip.loaders.from_snipmate").lazy_load()
     },
+
+    { 'rafamadriz/friendly-snippets' },
 
     { -- Autocompletion
         'hrsh7th/nvim-cmp',
         dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
+        config = function()
+            require("luasnip.loaders.from_snipmate").lazy_load({ paths = { "~/.config/nvim/snippets" } })
+        end,
     },
 
     -- Useful plugin to show you pending keybinds.
-    { 'folke/which-key.nvim',          opts = {} },
+    { 'folke/which-key.nvim', opts = {} },
     { -- Adds git releated signs to the gutter, as well as utilities for managing changes
         'lewis6991/gitsigns.nvim',
         opts = {
@@ -88,89 +90,6 @@ require('lazy').setup({
                 untracked    = { text = '┆' },
             },
         },
-    },
-
-    -- { -- Theme inspired by Atom
-    --     'navarasu/onedark.nvim',
-    --     priority = 1000,
-    --     config = function()
-    --         vim.cmd.colorscheme 'onedark'
-    --     end,
-    -- },
-    -- { -- Theme tokyonight
-    --     'folke/tokyonight.nvim',
-    --      priority = 1000,
-    --      config = function()
-    --          vim.cmd.colorscheme 'tokyonight-night'
-    --      end,
-    -- },
-    { "catppuccin/nvim",
-        name = "catppuccin",
-        config = function()
-            require("catppuccin").setup({
-                flavour = "mocha", -- latte, frappe, macchiato, mocha
-                background = { -- :h background
-                    light = "latte",
-                    dark = "mocha",
-                },
-                transparent_background = false,
-                show_end_of_buffer = false, -- show the '~' characters after the end of buffers
-                term_colors = false,
-                dim_inactive = {
-                    enabled = false,
-                    shade = "dark",
-                    percentage = 0.15,
-                },
-                no_italic = false, -- Force no italic
-                no_bold = false, -- Force no bold
-                styles = {
-                    comments = { "italic" },
-                    conditionals = { "italic" },
-                    loops = {},
-                    functions = {},
-                    keywords = {},
-                    strings = {},
-                    variables = {},
-                    numbers = {},
-                    booleans = {},
-                    properties = {},
-                    types = {},
-                    operators = {},
-                },
-                color_overrides = {},
-                custom_highlights = {},
-                integrations = {
-                    cmp = true,
-                    gitsigns = true,
-                    nvimtree = true,
-                    telescope = true,
-                    notify = false,
-                    mini = false,
-                    treesitter = true,
-                    which_key = true,
-                    gitgutter = true,
-                    fidget = true,
-                    native_lsp = {
-                        enabled = true,
-                        virtual_text = {
-                            errors = { "italic" },
-                            hints = { "italic" },
-                            warnings = { "italic" },
-                            information = { "italic" },
-                        },
-                        underlines = {
-                            errors = { "underline" },
-                            hints = { "underline" },
-                            warnings = { "underline" },
-                            information = { "underline" },
-                        },
-                    },
-                    -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
-                },
-            })
-            -- setup must be called before loading
-            vim.cmd.colorscheme "catppuccin"
-        end,
     },
 
     { -- Set lualine as statusline
@@ -196,7 +115,7 @@ require('lazy').setup({
     },
 
     -- "gc" to comment visual regions/lines
-    { 'numToStr/Comment.nvim',         opts = {} },
+    { 'numToStr/Comment.nvim', opts = {} },
 
     -- Fuzzy Finder (files, lsp, etc)
     { 'nvim-telescope/telescope.nvim', version = '*', dependencies = { 'nvim-lua/plenary.nvim' } },
@@ -226,6 +145,7 @@ require('lazy').setup({
 
     require 'kickstart.plugins.autoformat',
     require 'kickstart.plugins.debug',
+    require 'kickstart.plugins.color_shemes',
 
     -- NOTE: The import below automatically adds your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
     --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
@@ -344,7 +264,8 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
     -- ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'vimdoc', 'vim' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'vimdoc', 'vim', "bash", "json", "markdown", "query",
+        "regex", "yaml" },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = true,
@@ -471,6 +392,7 @@ local servers = {
     pyright = {},
     -- rust_analyzer = {},
     -- tsserver = {},
+    bashls = {},
 
     lua_ls = {
         Lua = {
@@ -520,7 +442,7 @@ cmp.setup {
         end,
     },
     mapping = cmp.mapping.preset.insert {
-        ['<C-d>'] = cmp.mapping.scroll_docs( -4),
+        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete {},
         ['<CR>'] = cmp.mapping.confirm {
@@ -539,8 +461,8 @@ cmp.setup {
         ['<S-Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_prev_item()
-            elseif luasnip.jumpable( -1) then
-                luasnip.jump( -1)
+            elseif luasnip.jumpable(-1) then
+                luasnip.jump(-1)
             else
                 fallback()
             end
