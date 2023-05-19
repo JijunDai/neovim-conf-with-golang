@@ -64,7 +64,12 @@ return {
 				f = { name = "+File" },
 				h = { name = "+Help" },
 				j = { name = "+Jump" },
-				g = { name = "+Git", h = { name = "Hunk" }, t = { name = "Toggle" } },
+				g = {
+					name = "+Git",
+					h = { name = "Hunk" },
+					t = { name = "Toggle" },
+					z = { "<cmd>lua require('utils.lazygit').lazygit_toggle()<CR>", "Git TUI" },
+				},
 				n = { name = "+Notes" },
 				p = { name = "+Project" },
 				-- o = { name = "+Orgmode" },
