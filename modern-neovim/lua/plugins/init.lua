@@ -11,6 +11,7 @@ return {
 		end,
 	},
 	{ "yamatsum/nvim-nonicons", config = true, enabled = false },
+	{ "tpope/vim-sleuth", event = "VeryLazy" },
 	{ "tpope/vim-repeat", event = "VeryLazy" },
 	{ "nacro90/numb.nvim", event = "BufReadPre", config = true },
 	{

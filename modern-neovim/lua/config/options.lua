@@ -2,7 +2,7 @@ local opt = vim.opt
 
 opt.autoindent = true
 opt.formatoptions = "jqlnt" -- tcqj
-opt.shortmess:append { W = true, I = true, c = true }
+opt.shortmess:append({ W = true, I = true, c = true })
 opt.breakindent = true
 opt.clipboard = "unnamedplus" -- Access system clipboard
 opt.cmdheight = 1
@@ -48,10 +48,11 @@ opt.title = true
 opt.undofile = true
 opt.updatetime = 200
 opt.wildmode = "longest:full,full"
+opt.iskeyword:append("-")
 
-if vim.fn.has "nvim-0.9.0" == 1 then
-  opt.splitkeep = "screen"
-  opt.shortmess:append { C = true }
+if vim.fn.has("nvim-0.9.0") == 1 then
+	opt.splitkeep = "screen"
+	opt.shortmess:append({ C = true })
 end
 
 vim.g.mapleader = " "
