@@ -43,7 +43,7 @@ return {
           q = { function() require("utils").quit() end, "Quit", },
           t = { "<cmd>tabclose<cr>", "Close Tab" },
         },
-				-- a = { name = "+AI" },
+				a = { name = "+AI" },
 				b = {
 					name = "+Buffer",
 					["n"] = { "<cmd>BufferLineCycleNext<CR>", "Next Buffer" },

@@ -14,9 +14,9 @@ return {
 			{
 				"tzachar/cmp-tabnine",
 				build = "./install.sh",
-				enabled = false,
+				enabled = true,
 			},
-			{ "jcdickinson/codeium.nvim", config = true, enabled = false },
+			{ "jcdickinson/codeium.nvim", config = true, enabled = true },
 			{
 				"jcdickinson/http.nvim",
 				build = "cargo build --workspace --release",
@@ -32,8 +32,8 @@ return {
 			local source_names = {
 				nvim_lsp = "(LSP)",
 				luasnip = "(Snippet)",
-				-- cmp_tabnine = "(TabNine)",
-				-- codeium = "(Codeium)",
+				cmp_tabnine = "(TabNine)",
+				codeium = "(Codeium)",
 				buffer = "(Buffer)",
 				path = "(Path)",
 			}
@@ -122,14 +122,14 @@ return {
 				}),
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp_signature_help", group_index = 1 },
-					{ name = "nvim_lsp", group_index = 1 },
-					-- { name = "cmp_tabnine", group_index = 1 },
-					{ name = "codeium", group_index = 1 },
-					{ name = "luasnip", group_index = 1 },
-					{ name = "buffer", group_index = 2 },
-					{ name = "path", group_index = 2 },
-					{ name = "git", group_index = 2 },
-					{ name = "orgmode", group_index = 2 },
+					{ name = "nvim_lsp", group_index = 2 },
+					{ name = "cmp_tabnine", group_index = 3 },
+					{ name = "codeium", group_index = 4 },
+					{ name = "luasnip", group_index = 5 },
+					{ name = "buffer", group_index = 6 },
+					{ name = "path", group_index = 7 },
+					{ name = "git", group_index = 8 },
+					{ name = "orgmode", group_index = 9 },
 				}),
 				formatting = {
 					fields = { "kind", "abbr", "menu" },
@@ -143,11 +143,11 @@ return {
 						item.menu = source_names[entry.source.name]
 						item.dup = duplicates[entry.source.name] or duplicates_default
 
-						-- if entry.source.name == "cmp_tabnine" then
-						--   item.kind = ""
-						-- elseif entry.source.name == "codeium" then
-						--   item.kind = ""
-						-- end
+						if entry.source.name == "cmp_tabnine" then
+							item.kind = ""
+						elseif entry.source.name == "codeium" then
+							item.kind = ""
+						end
 						return item
 					end,
 				},
@@ -179,18 +179,18 @@ return {
 			require("cmp_git").setup({ filetypes = { "NeogitCommitMessage" } })
 
 			-- TabNine
-			-- local tabnine = require "cmp_tabnine.config"
-			-- tabnine:setup {
-			--   max_lines = 1000,
-			--   max_num_results = 20,
-			--   sort = true,
-			--   run_on_every_keystroke = true,
-			--   snippet_placeholder = "..",
-			--   ignored_file_types = { -- default is not to ignore
-			--     -- uncomment to ignore in lua:
-			--     -- lua = true
-			--   },
-			-- }
+			local tabnine = require("cmp_tabnine.config")
+			tabnine:setup({
+				max_lines = 1000,
+				max_num_results = 20,
+				sort = true,
+				run_on_every_keystroke = true,
+				snippet_placeholder = "..",
+				ignored_file_types = { -- default is not to ignore
+					-- uncomment to ignore in lua:
+					-- lua = true
+				},
+			})
 		end,
 	},
 	{
